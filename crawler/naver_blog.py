@@ -28,13 +28,13 @@ def crawl_naver_blog(keyword: str, max_page: int = 3):
         url = f"https://search.naver.com/search.naver?where=post&query={keyword}&start={page*10-9}"
         resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"})
         soup = BeautifulSoup(resp.text, 'html.parser')
-        # 최신 네이버 검색 결과 selector (2025년 기준)
+        # 최신 네이버 검색 결과 selector (2024년 기준)
         for item in soup.select('a.api_txt_lines.total_tit'):
             title = item.get('title') or item.text.strip()
             link = item.get('href')
             # 상세 페이지 진입해서 날짜/본문 파싱
             date, content = get_blog_post_date_and_content(link)
-            # 날짜 파싱 및 2025-06-01 이후만 필터
+            # 날짜 파싱 및 2024-06-01 이후만 필터
             if date:
                 try:
                     date_str = date.split()[0].replace('.', '-')  # '2024.06.07.' -> '2024-06-07'
@@ -45,6 +45,17 @@ def crawl_naver_blog(keyword: str, max_page: int = 3):
             time.sleep(0.5)  # 네이버 차단 방지 딜레이
     return reviews
 
+def crawl_naver_blog_multi(keywords, max_page=3):
+    all_reviews = []
+    seen_links = set()
+    for keyword in keywords:
+        reviews = crawl_naver_blog(keyword, max_page)
+        for r in reviews:
+            if r['link'] not in seen_links:
+                all_reviews.append(r)
+                seen_links.add(r['link'])
+    return all_reviews
+
 def save_reviews_to_file(reviews, date_str):
     os.makedirs('data/reviews', exist_ok=True)
     path = f'data/reviews/{date_str}.json'
@@ -53,6 +64,11 @@ def save_reviews_to_file(reviews, date_str):
 
 if __name__ == "__main__":
     today = datetime.date.today().isoformat()
-    result = crawl_naver_blog("우리끼리 키즈카페 대전문화점 후기")
+    keywords = [
+        "우리끼리 리뷰",
+        "대전문화점 리뷰",
+        "우리끼리 대전문화점"
+    ]
+    result = crawl_naver_blog_multi(keywords)
     save_reviews_to_file(result, today)
     print(f"Saved {len(result)} reviews to data/reviews/{today}.json")
