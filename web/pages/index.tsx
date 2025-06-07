@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import '../styles/kakao.css';
 import ReviewList from '../components/ReviewList';
 import StrategyCard from '../components/StrategyCard';
 
