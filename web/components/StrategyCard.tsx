@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/kakao.css';
 
 type Strategy = {
   date: string;
@@ -12,6 +11,7 @@ type Strategy = {
   main_negative_keywords: string[];
   response_plan: string;
   final_strategy: string;
+  ai_summary?: string;
 };
 
 type Props = {
@@ -31,6 +31,11 @@ export default function StrategyCard({ strategy }: Props) {
       </div>
       <div style={{ margin: '8px 0', color: '#2d8c00' }}><b>AI 대응책:</b> {strategy.response_plan}</div>
       <div style={{ margin: '8px 0', color: '#3d1e1e', fontWeight: 'bold' }}><b>최종 전략:</b> {strategy.final_strategy}</div>
+      {strategy.ai_summary && (
+        <div style={{ margin: '8px 0', color: '#0057b8', fontWeight: 'bold' }}>
+          <b>Gemini AI 요약:</b> {strategy.ai_summary}
+        </div>
+      )}
     </div>
   );
 } 
