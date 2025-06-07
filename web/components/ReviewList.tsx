@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/kakao.css';
 
 type Review = {
   date: string;
