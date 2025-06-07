@@ -1,0 +1,53 @@
+body {
+  background: #fffbe7;
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.kakao-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1.5px solid #ffe066;
+}
+
+.kakao-btn {
+  background: #ffe066;
+  color: #3d1e1e;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.kakao-btn:hover {
+  background: #ffd600;
+}
+
+h1, h2, h3 {
+  color: #3d1e1e;
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .main-container {
+    padding: 8px;
+  }
+  .kakao-card {
+    padding: 14px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+} 
