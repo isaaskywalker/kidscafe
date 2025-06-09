@@ -1,29 +1,40 @@
-name: Crawl and Push Reviews
+name: Daily Review Crawler
 
 on:
   schedule:
-    - cron: '0 0 * * 0' # 매주 일요일 0시
-  workflow_dispatch:
+    # 매일 오전 9시 (UTC 0시) 실행
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 수동 실행 가능
 
 jobs:
-  crawl:
+  crawl-reviews:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # GitHub Actions가 저장소에 푸시할 수 있도록 쓰기 권한 추가
+    
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run Naver Blog Crawler
-        run: python3 crawler/naver_blog.py
-      - name: Commit and push if changed
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add data/reviews/
-          git commit -m 'auto: update reviews' || echo 'No changes to commit'
-          git push 
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install requests beautifulsoup4
+    
+    - name: Run crawler
+      run: |
+        python naver_blog.py
+    
+    - name: Generate marketing strategy
+      run: |
+        python strategy.py
+    
+    - name: Commit and push results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/
+        git commit -m "Update reviews and strategy $(date)" || exit 0
+        git push
