@@ -1,4 +1,3 @@
-// pages/index.js
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ReviewList from '../components/ReviewList';
