@@ -165,16 +165,38 @@ def load_reviews_and_generate_strategy(reviews_file_path: str) -> str:
         return "리뷰 파일을 읽는 중 오류가 발생했습니다."
 
 if __name__ == "__main__":
-    import datetime
+    print("🎯 마케팅 전략 생성기")
     
-    print("🎯 마케팅 전략 생성기 테스트")
+    # 최신 리뷰 파일 찾기 (여러 형태 지원)
+    from datetime import date
+    today = date.today().isoformat()
     
-    # 최신 리뷰 파일 찾기
-    today = datetime.date.today().isoformat()
-    reviews_path = f'data/reviews/{today}.json'
+    # 가능한 파일 경로들 (우선순위대로)
+    possible_paths = [
+        f'data/reviews/{today}_iframe.json',  # iframe 크롤러 결과
+        f'data/reviews/{today}_simple.json',  # 간소화 크롤러 결과
+        f'data/reviews/{today}.json'          # 기본 크롤러 결과
+    ]
     
-    if os.path.exists(reviews_path):
+    reviews_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            reviews_path = path
+            break
+    
+    if reviews_path:
         print(f"📂 리뷰 파일 발견: {reviews_path}")
+        
+        # 리뷰 개수 확인
+        try:
+            with open(reviews_path, 'r', encoding='utf-8') as f:
+                reviews = json.load(f)
+            print(f"📊 총 {len(reviews)}개 리뷰 분석 예정")
+        except:
+            print("❌ 리뷰 파일 읽기 실패")
+            exit()
+        
+        # 마케팅 전략 생성
         strategy = load_reviews_and_generate_strategy(reviews_path)
         
         # 전략 저장
@@ -188,5 +210,8 @@ if __name__ == "__main__":
         print(f"\n✅ 완료! 전략 파일: {strategy_path}")
         
     else:
-        print(f"❌ 리뷰 파일이 없습니다: {reviews_path}")
-        print("먼저 crawler.py를 실행해서 리뷰를 수집하세요.")
+        print("❌ 리뷰 파일이 없습니다.")
+        print("다음 중 하나를 먼저 실행하세요:")
+        print("  - blog.py (권장)")
+        print("  - simplified_crawler.py")
+        print("  - crawler.py")
