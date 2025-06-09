@@ -1,8 +1,7 @@
 {
   "name": "kidscafe-marketing",
   "version": "1.0.0",
-  "description": "우리끼리 키즈카페 대전문화점 마케팅 대시보드",
-  "private": true,
+  "description": "Kids Cafe Marketing Dashboard",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,19 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "axios": "^1.6.0",
-    "cheerio": "^1.0.0-rc.12"
+    "next": "14.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
-    "eslint-config-next": "^14.0.0",
-    "@types/react": "^18.2.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.5",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.3"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18.0.0"
   }
 }
